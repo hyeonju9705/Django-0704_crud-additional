@@ -8,9 +8,9 @@ from django.contrib import auth
 
 @login_required(login_url='/login/')
 def del_comment(request, pk):
-    print("hello")
-    # comment = get_object_or_404(Comment, pk=pk)
-    # comment.delete()
+    # 본 함수는 정상 작동합니다.
+    comment = get_object_or_404(Comment, pk=pk)
+    comment.delete()
     return redirect('home')
 
 
@@ -41,8 +41,10 @@ def edit_comment(request, pk):
 
 @login_required(login_url='/login/')
 def delete(request, pk):
-    comment = get_object_or_404(Comment, pk = pk)
-    comment.delete()
+    # 본 함수는 Comment가 아니라 
+    # Blog를 삭제해야하기 때문에 , 수정되었습니다.
+    blog = get_object_or_404(Blog, pk = pk)
+    blog.delete()
     return redirect('home')
 
 def welcome(request):
@@ -105,14 +107,17 @@ def update(request, pk):
        form = NewBlog(instance=blog) 
     return render(request, 'funccrud/new.html', {'form':form})
 
-@login_required(login_url='/login/')
-def del_comment(request, pk):
-    blog = get_object_or_404(Blog, pk = pk)
-    blog.delete()
-    return redirect('home')
+# 같은 함수가 두번 선언되어있어
+# 가장 아래있는 본 함수들이 실행되어 생기는 에러였습니다.
 
-@login_required(login_url='/login/')
-def delete(request, pk):
-    blog = get_object_or_404(Blog, pk = pk)
-    blog.delete()
-    return redirect('home')
+# @login_required(login_url='/login/')
+# def del_comment(request, pk):
+#     blog = get_object_or_404(Blog, pk = pk)
+#     blog.delete()
+#     return redirect('home')
+
+# @login_required(login_url='/login/')
+# def delete(request, pk):
+#     blog = get_object_or_404(Blog, pk = pk)
+#     blog.delete()
+#     return redirect('home')
